@@ -2,6 +2,7 @@ import AlbumsPage from 'pages/albums-page';
 import HomePage from 'pages/home-page';
 import LoginPage from 'pages/login-page';
 import PlaylistsPage from 'pages/playlists-page';
+import ProfilePage from 'pages/profile-page';
 import RegisterPage from 'pages/register-page';
 import SingleAlbumPage from 'pages/single-album-page';
 import SingleTrackPage from 'pages/single-track-page';
@@ -19,6 +20,7 @@ const Paths: React.FC = () => (
 		<Route path='/login' element={<LoginPage />}/>
 		<Route path='/register' element={<RegisterPage />}/>
 		<Route path='/playlists' element={<PlaylistsPage />}/>
+		<Route path='/profile' element={<ProfilePage />}/>
 	</Routes>
 );
 

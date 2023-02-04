@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from 'widgets/header';
 import MainNavigation from 'widgets/main-navigation';
+import './styles/index.scss';
 
 type MainNavigationProps = {
 	children: React.ReactNode;
