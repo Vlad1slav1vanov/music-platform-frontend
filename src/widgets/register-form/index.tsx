@@ -1,55 +1,13 @@
-import {Avatar, Button, TextField} from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import {Avatar, Button, TextField, Typography} from '@mui/material';
+import CheckIcon from '@mui/icons-material/Check';
 import {observer} from 'mobx-react-lite';
 import React from 'react';
-import {useForm} from 'react-hook-form';
+import registerStore from './store';
 import './styles/index.scss';
 
 const RegisterForm: React.FC = () => {
-	const [avatarUrl, setAvatarUrl] = React.useState<string>('');
-	const avatarInput = React.useRef<HTMLInputElement>(null);
-
-	const {
-		register,
-		handleSubmit,
-		setValue,
-		formState: {
-			errors,
-			isValid,
-		}} = useForm({
-		defaultValues: {
-			email: '',
-			fullName: '',
-			password: '',
-			avatar: undefined as undefined | File,
-		},
-		mode: 'onChange',
-	});
-
-	const changeAvatar = (evt: React.ChangeEvent<HTMLInputElement>) => {
-		if (evt.target.files) {
-			const file = evt.target.files[0];
-			setValue('avatar', file);
-			const reader = new FileReader();
-			reader.onload = e => {
-				setAvatarUrl(e?.target?.result as string);
-			};
-
-			reader.readAsDataURL(file);
-		}
-	};
-
-	const deleteAvatar = () => {
-		setValue('avatar', undefined);
-		setAvatarUrl('');
-	};
-
-	const refreshForm = () => {
-		deleteAvatar();
-		setValue('email', '');
-		setValue('password', '');
-		setValue('fullName', '');
-	};
-
+  const avatarInput = React.useRef<HTMLInputElement | null>(null)
 	return (
 		<div className='register-form'>
 			<Avatar
@@ -58,13 +16,13 @@ const RegisterForm: React.FC = () => {
 					height: 150,
 					background: '#5824f3',
 				}}
-				src={avatarUrl}
+        src={registerStore.avatarUrl}
 			/>
 			<div className='register-form__avatar-buttons'>
-				{avatarUrl
+				{registerStore.avatarUrl
 					? <Button
 						color='error'
-						onClick={deleteAvatar}
+						onClick={registerStore.deletePicture}
 					>
             Удалить
 					</Button>
@@ -80,36 +38,54 @@ const RegisterForm: React.FC = () => {
 					type='file'
 					accept='image/*'
 					hidden
-					{...register('avatar')}
-					ref={avatarInput}
-					onChange={changeAvatar}
+          onChange={registerStore.changePicture}
+          ref={avatarInput}
 				/>
 				<TextField
 					label='E-mail'
 					type='email'
-					error={Boolean(errors.email?.message)}
-					helperText={errors.email?.message}
-					{...register('email', {required: 'Укажите почту'})}
+          error={Boolean(registerStore.emailError)}
+          helperText={registerStore.emailError}
+          value={registerStore.email}
+          onChange={registerStore.changeEmail}
 				/>
 				<TextField
 					label='Имя/Никнейм'
 					type='text'
-					error={Boolean(errors.fullName?.message)}
-					helperText={errors.fullName?.message}
-					{...register('fullName', {required: 'Укажите свое имя или никнейм'})}
+          error={Boolean(registerStore.fullNameError)}
+          helperText={registerStore.fullNameError}
+          value={registerStore.fullName}
+          onChange={registerStore.changeFullName}
 				/>
 				<TextField
 					label='Пароль'
 					type='password'
-					error={Boolean(errors.password?.message)}
-					helperText={errors.password?.message}
-					{...register('password', {required: 'Придумайте пароль'})}
+          error={Boolean(registerStore.passwordError)}
+          helperText={registerStore.passwordError}
+          value={registerStore.password}
+          onChange={registerStore.changePassword}
 				/>
 				<div className='register-form__buttons-wrapper'>
-					<Button variant='contained'>Регистрация</Button>
-					<Button variant='outlined'>Сброс</Button>
+					<LoadingButton 
+          endIcon={<CheckIcon />} 
+          variant='contained' 
+          loading={registerStore.isLoading}
+          loadingPosition='end'
+          onClick={registerStore.fetchRegister}
+          >
+            Регистрация
+					</LoadingButton>
+					<Button
+						variant='outlined'
+            onClick={registerStore.refreshForm}
+					>
+            Сброс
+					</Button>
 				</div>
 			</form>
+      {registerStore.registerError &&
+      <Typography color='error'>{registerStore.registerError}</Typography>
+      }
 		</div>
 	);
 };
