@@ -1,6 +1,8 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import { emailRe } from "shared/regexps";
 import axios from 'shared/api'
+import { IUserWithToken } from "shared/types/user";
+import userStore from "shared/user-store";
 
 class RegisterStore {
   constructor() {
@@ -97,20 +99,28 @@ class RegisterStore {
 
   fetchRegister = async () => {
     try {
-      this.isLoading = true
-      if (!this.validateForm()) {
-        return
-      }
-      const response = await axios.post('/users/register', this.createFormData())
-      console.log(response)
+      runInAction(() => {
+        this.isLoading = true
+        if (!this.validateForm()) {
+          return
+        }
+      })
+      const {data} = await axios.post<IUserWithToken>('/users/register', this.createFormData())
+      runInAction(() => {
+        userStore.saveUserData(data)
+      })
     } catch (err) {
-      if (err.response) {
-        this.registerError = err.response.data.message
-      } else {
-        this.registerError = err.message
-      }
+      runInAction(() => {
+        if (err.response) {
+          this.registerError = err.response.data.message
+        } else {
+          this.registerError = err.message
+        }
+      })
     } finally {
-      this.isLoading = false
+      runInAction(() => {
+        this.isLoading = false
+      })
     }
   }
 }
