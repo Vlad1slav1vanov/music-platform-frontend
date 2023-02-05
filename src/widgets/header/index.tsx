@@ -1,12 +1,15 @@
 import {AppBar, Avatar, Button, Toolbar, Typography} from '@mui/material';
-import React from 'react';
-import axios from 'shared/api/index'
+import React, { useEffect } from 'react';
 import {useNavigate} from 'react-router-dom';
 import userStore from 'shared/user-store';
 import './styles/index.scss';
 import { baseUrl } from 'shared/api/baseUrl';
+import { observer } from 'mobx-react-lite';
 
 const Header: React.FC = () => {
+  useEffect(() => {
+    userStore.authUser()
+  }, [userStore.email])
 	const navigate = useNavigate();
 	return (
 		<AppBar>
@@ -57,4 +60,4 @@ const Header: React.FC = () => {
 	);
 };
 
-export default Header;
+export default observer(Header);

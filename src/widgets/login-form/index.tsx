@@ -5,11 +5,26 @@ import { observer } from "mobx-react-lite";
 import React from "react";
 import loginStore from "./store";
 import './styles/index.scss'
+import { useNavigate } from "react-router-dom";
+import userStore from "shared/user-store";
 
 const LoginForm: React.FC = () => {
+  const navigate = useNavigate()
+  const successLogin = async () => {
+    await loginStore.fetchLogin()
+    if (userStore.email) {
+      navigate('/')
+    }
+  }
   return (
     <div className="login-form">
-      <form className="login-form__form">
+      <form 
+      className="login-form__form" 
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          successLogin();
+        }
+      }}>
         <TextField 
         label="E-mail" 
         fullWidth 
@@ -25,7 +40,7 @@ const LoginForm: React.FC = () => {
         <div className="login-form__buttons-wrapper">
           <LoadingButton 
           variant="contained" 
-          onClick={loginStore.fetchLogin} 
+          onClick={successLogin} 
           loading={loginStore.isLoading}
           endIcon={<CheckIcon />}
           loadingPosition='end'

@@ -33,6 +33,7 @@ class LoginStore {
       })
       const {data} = await axios.post<IUserWithToken>('/users/login', {email: this.email, password: this.password})
       runInAction(() => {
+        this.refreshForm()
         userStore.saveUserData(data)
       })
     } catch (err) {

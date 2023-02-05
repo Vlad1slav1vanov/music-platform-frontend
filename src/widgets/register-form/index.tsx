@@ -5,9 +5,18 @@ import {observer} from 'mobx-react-lite';
 import React from 'react';
 import registerStore from './store';
 import './styles/index.scss';
+import userStore from 'shared/user-store';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterForm: React.FC = () => {
-  const avatarInput = React.useRef<HTMLInputElement | null>(null)
+  const avatarInput = React.useRef<HTMLInputElement | null>(null) 
+  const navigate = useNavigate()
+  const successRegister = async () => {
+    await registerStore.fetchRegister()
+    if (userStore.email) {
+      navigate('/')
+    }
+  }
 	return (
 		<div className='register-form'>
 			<Avatar
@@ -33,7 +42,14 @@ const RegisterForm: React.FC = () => {
 					</Button>
 				}
 			</div>
-			<form className='register-form__form'>
+			<form 
+      className='register-form__form'
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          successRegister();
+        }
+      }}
+      >
 				<input
 					type='file'
 					accept='image/*'
@@ -71,7 +87,7 @@ const RegisterForm: React.FC = () => {
           variant='contained' 
           loading={registerStore.isLoading}
           loadingPosition='end'
-          onClick={registerStore.fetchRegister}
+          onClick={successRegister}
           >
             Регистрация
 					</LoadingButton>

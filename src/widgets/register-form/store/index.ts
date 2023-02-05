@@ -105,9 +105,11 @@ class RegisterStore {
           return
         }
       })
-      const {data} = await axios.post<IUserWithToken>('/users/register', this.createFormData())
+      const formData = this.createFormData();
+      const {data} = await axios.post<IUserWithToken>('/users/register', formData)
       runInAction(() => {
         userStore.saveUserData(data)
+        this.refreshForm()
       })
     } catch (err) {
       runInAction(() => {
