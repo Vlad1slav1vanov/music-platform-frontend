@@ -1,13 +1,13 @@
+import { IconButton } from "@mui/material";
 import React from "react";
 import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite';
 import PauseCircleIcon from '@mui/icons-material/PauseCircle';
-import { IconButton } from "@mui/material";
 
-interface ButtonStartStopProps {
+interface PlayerStartStopProps {
   isActive: boolean;
 }
 
-const ButtonStartStop: React.FC<ButtonStartStopProps> = ({isActive = false}) => {
+const PlayerStartStop: React.FC<PlayerStartStopProps> = ({isActive}) => {
   return (
     <>
       {
@@ -15,14 +15,14 @@ const ButtonStartStop: React.FC<ButtonStartStopProps> = ({isActive = false}) => 
       ? <IconButton 
         size="large" 
         sx={{
-          width: 50, 
-          height: 50
+          width: 70, 
+          height: 70
         }}
         >
           <PauseCircleIcon 
           sx={{ 
-            width: 40, 
-            height: 40 
+            width: 60, 
+            height: 60 
           }} 
           color="secondary" 
           fontSize="large" 
@@ -31,17 +31,16 @@ const ButtonStartStop: React.FC<ButtonStartStopProps> = ({isActive = false}) => 
       : <IconButton 
         size="large" 
         sx={{
-          width: 50, 
-          height: 50
+          width: 70, 
+          height: 70
         }}
         >
           <PlayCircleFilledWhiteIcon 
           sx={{ 
-            width: 40, 
-            height: 40 
+            width: 60, 
+            height: 60,
+            color: "white"
           }} 
-          color="secondary" 
-          fontSize="large"
           />
         </IconButton>
       }
@@ -49,4 +48,4 @@ const ButtonStartStop: React.FC<ButtonStartStopProps> = ({isActive = false}) => 
   )
 }
 
-export default ButtonStartStop;
+export default PlayerStartStop;

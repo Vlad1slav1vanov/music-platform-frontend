@@ -1,0 +1,13 @@
+.player {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 84px;
+  border: 1px solid black;
+  background-color: #5824f3;
+  z-index: 10000;
+  padding: 0 40px;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+}
