@@ -1,6 +1,8 @@
 .main-wrapper {
-  margin-left: 240px;
-  padding: 20px;
-  padding-top: 84px;
+  position: fixed;
+  right: 0;
+  overflow-y: scroll;
+  width: calc(100vw - 240px);
+  padding: 84px 20px;
   height: 100%;
 }
