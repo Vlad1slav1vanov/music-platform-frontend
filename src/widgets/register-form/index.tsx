@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 const RegisterForm: React.FC = () => {
   const avatarInput = React.useRef<HTMLInputElement | null>(null) 
+  const successButton = React.useRef<HTMLButtonElement | null>(null)
   const navigate = useNavigate()
   const successRegister = async () => {
     await registerStore.fetchRegister()
@@ -17,6 +18,18 @@ const RegisterForm: React.FC = () => {
       navigate('/')
     }
   }
+  const handleKeyDown = (evt: KeyboardEvent) => {
+    if (evt.key === "Enter") {
+      successButton.current?.click()
+    }
+  };
+  React.useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [])
 	return (
 		<div className='register-form'>
 			<Avatar
@@ -44,11 +57,6 @@ const RegisterForm: React.FC = () => {
 			</div>
 			<form 
       className='register-form__form'
-      onKeyDown={(e) => {
-        if (e.key === 'Enter') {
-          successRegister();
-        }
-      }}
       >
 				<input
 					type='file'
@@ -87,6 +95,7 @@ const RegisterForm: React.FC = () => {
           variant='contained' 
           loading={registerStore.isLoading}
           loadingPosition='end'
+          ref={successButton}
           onClick={successRegister}
           >
             Регистрация

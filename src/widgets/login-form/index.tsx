@@ -10,21 +10,32 @@ import userStore from "shared/user-store";
 
 const LoginForm: React.FC = () => {
   const navigate = useNavigate()
+  const successButton = React.useRef<HTMLButtonElement | null>(null)
+
   const successLogin = async () => {
     await loginStore.fetchLogin()
     if (userStore.email) {
       navigate('/')
     }
   }
+
+  const handleKeyDown = (evt: KeyboardEvent) => {
+    if (evt.key === "Enter") {
+      successButton.current?.click()
+    }
+  };
+
+  React.useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [])
+
   return (
     <div className="login-form">
-      <form 
-      className="login-form__form" 
-      onKeyDown={(e) => {
-        if (e.key === 'Enter') {
-          successLogin();
-        }
-      }}>
+      <form className="login-form__form">
         <TextField 
         label="E-mail" 
         fullWidth 
@@ -43,13 +54,14 @@ const LoginForm: React.FC = () => {
           onClick={successLogin} 
           loading={loginStore.isLoading}
           endIcon={<CheckIcon />}
+          ref={successButton}
           loadingPosition='end'
           disabled={Boolean(!loginStore.email || !loginStore.password)}
           >
             Вход
           </LoadingButton>
           <Button 
-          variant="outlined" 
+          variant="outlined"
           onClick={loginStore.refreshForm}
           >
             Сброс

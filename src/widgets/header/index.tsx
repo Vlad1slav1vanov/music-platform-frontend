@@ -22,7 +22,7 @@ const Header: React.FC = () => {
           userStore.email 
           ?
           <div className='user-block'>
-            <Avatar src={baseUrl + userStore.avatarUrl} />
+            <Avatar src={`${baseUrl}/${userStore.avatarUrl}`} />
             <Typography>{userStore.fullName}</Typography>
             <Button 
             variant='contained' 
