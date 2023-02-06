@@ -12,17 +12,20 @@ const RegisterForm: React.FC = () => {
   const avatarInput = React.useRef<HTMLInputElement | null>(null) 
   const successButton = React.useRef<HTMLButtonElement | null>(null)
   const navigate = useNavigate()
+
   const successRegister = async () => {
     await registerStore.fetchRegister()
     if (userStore.email) {
       navigate('/')
     }
   }
+
   const handleKeyDown = (evt: KeyboardEvent) => {
     if (evt.key === "Enter") {
       successButton.current?.click()
     }
   };
+
   React.useEffect(() => {
     document.addEventListener('keydown', handleKeyDown)
 
@@ -30,6 +33,7 @@ const RegisterForm: React.FC = () => {
       document.removeEventListener('keydown', handleKeyDown)
     }
   }, [])
+
 	return (
 		<div className='register-form'>
 			<Avatar
@@ -55,9 +59,7 @@ const RegisterForm: React.FC = () => {
 					</Button>
 				}
 			</div>
-			<form 
-      className='register-form__form'
-      >
+			<form className='register-form__form'>
 				<input
 					type='file'
 					accept='image/*'
