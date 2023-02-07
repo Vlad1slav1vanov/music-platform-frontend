@@ -18,7 +18,11 @@ const PlayerTrackInfo: React.FC<PlayerTrackInfoProps> = ({
       <Typography className="player-track-info__name">{name}</Typography>
       <div className="player-track-info__wrapper">
         <Typography className="player-track-info__artist">{artist}</Typography>
-        <Typography className="player-track-info__album">{album}</Typography>
+        {
+        album 
+        &&
+        <Typography className="player-track-info__album">({album})</Typography>
+        }
       </div>
     </div>
   )

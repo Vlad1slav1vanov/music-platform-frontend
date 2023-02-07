@@ -7,6 +7,7 @@ import RegisterPage from 'pages/register-page';
 import SingleAlbumPage from 'pages/single-album-page';
 import SingleTrackPage from 'pages/single-track-page';
 import TracksPage from 'pages/tracks-page';
+import UploadTrackPage from 'pages/upload-track-page';
 import React from 'react';
 import {Route, Routes} from 'react-router-dom';
 
@@ -21,6 +22,7 @@ const Paths: React.FC = () => (
 		<Route path='/register' element={<RegisterPage />}/>
 		<Route path='/playlists' element={<PlaylistsPage />}/>
 		<Route path='/profile' element={<ProfilePage />}/>
+    <Route path='/tracks/upload' element={<UploadTrackPage />}/>
 	</Routes>
 );
 

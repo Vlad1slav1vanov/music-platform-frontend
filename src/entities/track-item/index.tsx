@@ -1,4 +1,4 @@
-import { Card } from "@mui/material";
+import { Card, Typography } from "@mui/material";
 import React from "react";
 import './styles/index.scss';
 
@@ -30,12 +30,14 @@ const TrackItem: React.FC<TrackItemProps> = ({
       alt={`${name}, ${artist}`} 
       />
       <div className="track-item__info">
-        <div className="track-item__name">{name}</div>
-        <div className="track-item__artist">{artist}</div>
-        <div className="track-item__album">{album}</div>
+        <Typography className="track-item__name">{name}</Typography>
+        <Typography className="track-item__artist">{artist}</Typography>
+        <Typography className="track-item__album">{album}</Typography>
       </div>
       <div className="track-item__duration">
-        {duration}
+        <Typography>
+          {duration}
+        </Typography>
       </div>
     </Card>
   )

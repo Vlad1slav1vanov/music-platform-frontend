@@ -4,6 +4,8 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
+  margin-right: 100px;
+  margin-left: 20px;
 }
 
 .player-track-info__name {
@@ -18,4 +20,10 @@
 .player-track-info__album {
   font-size: 13px;
   color: #dad7d7;
+}
+
+.player-track-info__wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 20px;
 }
