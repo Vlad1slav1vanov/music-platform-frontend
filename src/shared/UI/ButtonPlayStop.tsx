@@ -3,11 +3,11 @@ import React from "react";
 import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite';
 import PauseCircleIcon from '@mui/icons-material/PauseCircle';
 
-interface PlayerStartStopProps {
+interface ButtonPlayStopProps {
   isActive: boolean;
 }
 
-const PlayerStartStop: React.FC<PlayerStartStopProps> = ({isActive}) => {
+const ButtonPlayStop: React.FC<ButtonPlayStopProps> = ({isActive}) => {
   return (
     <>
       {
@@ -22,14 +22,12 @@ const PlayerStartStop: React.FC<PlayerStartStopProps> = ({isActive}) => {
           <PauseCircleIcon 
           sx={{ 
             width: 60, 
-            height: 60 
-          }} 
-          color="secondary" 
-          fontSize="large" 
+            height: 60,
+            color: 'white',
+          }}  
           />
         </IconButton>
       : <IconButton 
-        size="large" 
         sx={{
           width: 70, 
           height: 70
@@ -48,4 +46,4 @@ const PlayerStartStop: React.FC<PlayerStartStopProps> = ({isActive}) => {
   )
 }
 
-export default PlayerStartStop;
+export default ButtonPlayStop;
