@@ -3,7 +3,7 @@ import React from "react";
 import './styles/index.scss';
 
 interface TrackItemProps {
-  picture: string;
+  picture?: string;
   name: string;
   artist: string;
   album?: string;
@@ -23,8 +23,8 @@ const TrackItem: React.FC<TrackItemProps> = ({
     <Card className="track-item">
       {button}
       <img 
-      className="track-item__image" 
-      src={picture} 
+      className={picture}
+      src={picture ? picture : "/images/empty-audio.jpeg"} 
       width="80" 
       height="80" 
       alt={`${name}, ${artist}`} 

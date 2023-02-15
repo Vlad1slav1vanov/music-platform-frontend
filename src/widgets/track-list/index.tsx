@@ -5,7 +5,7 @@ import './styles/index.scss';
 
 const TrackList: React.FC = () => {
   const trackList = [
-    {id: 1, name: 'Lose Yourself', artist: 'Eminem', picture: 'nkvslvndk', duration: 500},
+    {id: 1, name: 'Lose Yourself', artist: 'Eminem', duration: 500},
     {id: 2, name: 'Lose Yourself', artist: 'Eminem', picture: 'nkvslvndk', duration: 500},
     {id: 3, name: 'Lose Yourself', artist: 'Eminem', picture: 'nkvslvndk', duration: 500},
     {id: 4, name: 'Lose Yourself', artist: 'Eminem', picture: 'nkvslvndk', duration: 500},
