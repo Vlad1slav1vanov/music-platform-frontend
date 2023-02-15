@@ -1,4 +1,7 @@
-import { makeAutoObservable } from "mobx"
+import { makeAutoObservable, runInAction } from "mobx"
+import { ITrack } from "shared/types/track"
+import userStore from "shared/user-store"
+import axios from "../../../shared/api/index"
 
 class UploadTrackStore {
   constructor() {
@@ -6,13 +9,23 @@ class UploadTrackStore {
   }
 
   name = ""
+  nameError = ""
   artist = ""
+  artistError = ""
   text = ""
   pictureUrl = ""
   pictureFile: File | null = null
   audioName = ""
   audioFile: File | null = null
+  audioFileError = ""
   uploadError = ""
+  fetchLoading = false
+  isPopupOpen = false
+  popupText = ""
+
+  closePopup = () => {
+    this.isPopupOpen = false
+  }
 
   changeName = (evt: React.ChangeEvent<HTMLInputElement>) => {
     this.name = evt.target.value;
@@ -64,6 +77,71 @@ class UploadTrackStore {
     this.audioName = ""
     this.pictureFile = null
     this.pictureUrl = ""
+  }
+
+  createFormData = () => {
+    const formData = new FormData();
+    formData.append('name', this.name);
+    formData.append('artist', this.artist);
+    formData.append('text', this.text);
+    this.pictureFile &&
+    formData.append('picture', this.pictureFile);
+    this.audioFile &&
+    formData.append('audio', this.audioFile);
+  }
+
+  validateForm = () => {
+    if (!this.audioFile) {
+      this.audioFileError = "Укажите название трека"
+      return false
+    }
+
+    if (!this.name) {
+      this.nameError = "Укажите имя исполнителя"
+      return false
+    }
+
+    if (!this.artist) {
+      this.artistError = "Загрузите аудиофайл"
+      return false
+    }
+
+    if (!userStore.email) {
+      this.uploadError = "Только зарегистрированные пользователи могут загружать треки"
+      return false
+    }
+
+    return true
+  }
+
+  fetchUploadTrack = async () => {
+    try {
+      runInAction(() => {
+        this.fetchLoading = true
+        if (!this.validateForm()) {
+          return
+        }
+      })
+      const formData = this.createFormData()
+      const {data} = await axios.post<ITrack>('/tracks', formData)
+      runInAction(() => {
+        this.refreshForm()
+        this.isPopupOpen = true
+        this.popupText = `Трек ${data.name} успешно загружен!`
+      })
+    } catch (err) {
+      runInAction(() => {
+        if (err.response) {
+          this.uploadError = err.response.data.message
+        } else {
+          this.uploadError = err.message
+        }
+      })
+    } finally {
+      runInAction(() => {
+        this.fetchLoading = false
+      })
+    }
   }
 }
 

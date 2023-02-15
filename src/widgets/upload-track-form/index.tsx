@@ -5,6 +5,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import './styles/index.scss';
 import { observer } from "mobx-react-lite";
 import uploadTrackStore from "./store";
+import Popup from "shared/UI/Popup";
 
 const UploadTrackForm: React.FC = () => {
   const pictureInputRef = React.useRef<HTMLInputElement | null>(null);
@@ -63,6 +64,8 @@ const UploadTrackForm: React.FC = () => {
           label="Название трека"
           fullWidth
           required
+          error={Boolean(uploadTrackStore.nameError)}
+          helperText={uploadTrackStore.nameError}
           value={uploadTrackStore.name}
           onChange={uploadTrackStore.changeName}
           />
@@ -70,6 +73,8 @@ const UploadTrackForm: React.FC = () => {
           label="Имя исполнителя"
           fullWidth
           required
+          error={Boolean(uploadTrackStore.artistError)}
+          helperText={uploadTrackStore.artistError}
           value={uploadTrackStore.artist}
           onChange={uploadTrackStore.changeArtist}
           />
@@ -87,11 +92,16 @@ const UploadTrackForm: React.FC = () => {
                   {uploadTrackStore.audioName}
                 </Typography>
               </div>
-            : <Button
-              onClick={audioHandleClick}
-              >
-                Загрузить аудио
-              </Button>
+            : <div className="upload-audio-wrapper">
+                <Button
+                onClick={audioHandleClick}
+                >
+                  Загрузить аудио
+                </Button>
+                <Typography color="red">
+                  {uploadTrackStore.audioFileError}
+                </Typography>
+              </div>
             }
           </div>
           <TextField 
@@ -106,6 +116,8 @@ const UploadTrackForm: React.FC = () => {
         endIcon={<CheckIcon />} 
         variant='contained' 
         loadingPosition='end'
+        loading={uploadTrackStore.fetchLoading}
+        onClick={uploadTrackStore.fetchUploadTrack}
         >
           Загрузить
 				</LoadingButton>
@@ -116,6 +128,17 @@ const UploadTrackForm: React.FC = () => {
           сброс
         </Button>
       </div>
+      {
+      uploadTrackStore.uploadError
+      && <Typography className="upload-error" color="error">
+          {uploadTrackStore.uploadError}
+         </Typography>
+      }
+      <Popup 
+      isOpen={uploadTrackStore.isPopupOpen} 
+      text={uploadTrackStore.popupText} 
+      onClose={uploadTrackStore.closePopup}
+      />
     </div>
   )
 }

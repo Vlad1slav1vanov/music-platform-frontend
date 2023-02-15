@@ -23,7 +23,7 @@ const TrackItem: React.FC<TrackItemProps> = ({
     <Card className="track-item">
       {button}
       <img 
-      className={picture}
+      className="track-item__image"
       src={picture ? picture : "/images/empty-audio.jpeg"} 
       width="80" 
       height="80" 
