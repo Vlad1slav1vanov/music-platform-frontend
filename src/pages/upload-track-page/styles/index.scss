@@ -1,4 +1,10 @@
 .title-wrapper {
   display: flex;
   gap: 30px;
+  margin-bottom: 100px;
+}
+
+.upload-track-form__picture {
+  display: block;
+  border: 2px solid grey;
 }
