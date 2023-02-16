@@ -28,7 +28,7 @@ const UploadTrackForm: React.FC = () => {
           width={300} 
           height={300} 
           src={uploadTrackStore.pictureUrl ? uploadTrackStore.pictureUrl : '/images/empty-audio.jpeg'}
-          alt=""
+          alt="Ваша обложка."
           />
           {
           uploadTrackStore.pictureUrl
@@ -108,6 +108,8 @@ const UploadTrackForm: React.FC = () => {
           label="Текст песни"
           fullWidth
           multiline
+          value={uploadTrackStore.text}
+          onChange={uploadTrackStore.changeText}
           />
         </div>
       </div>

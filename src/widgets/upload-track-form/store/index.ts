@@ -88,59 +88,57 @@ class UploadTrackStore {
     formData.append('picture', this.pictureFile);
     this.audioFile &&
     formData.append('audio', this.audioFile);
+    return formData
   }
 
   validateForm = () => {
+    this.artistError = ''
+    this.nameError = ''
+    this.audioFileError = ''
+    this.uploadError = ''
+
     if (!this.audioFile) {
-      this.audioFileError = "Укажите название трека"
-      return false
+      this.audioFileError = "Загрузите аудиофайл!"
     }
 
     if (!this.name) {
-      this.nameError = "Укажите имя исполнителя"
-      return false
+      this.nameError = "Укажите название трека!"
     }
 
     if (!this.artist) {
-      this.artistError = "Загрузите аудиофайл"
-      return false
+      this.artistError = "Укажите имя исполнителя!"
     }
 
     if (!userStore.email) {
-      this.uploadError = "Только зарегистрированные пользователи могут загружать треки"
-      return false
+      this.uploadError = "Только зарегистрированные пользователи могут загружать треки!"
     }
 
-    return true
+    return (
+      !this.audioFileError 
+      && !this.nameError 
+      && !this.artistError 
+      && !this.uploadError)
   }
 
   fetchUploadTrack = async () => {
     try {
-      runInAction(() => {
-        this.fetchLoading = true
-        if (!this.validateForm()) {
-          return
-        }
-      })
+      this.fetchLoading = true
+      if (!this.validateForm()) {
+        return
+      }
       const formData = this.createFormData()
       const {data} = await axios.post<ITrack>('/tracks', formData)
-      runInAction(() => {
-        this.refreshForm()
-        this.isPopupOpen = true
-        this.popupText = `Трек ${data.name} успешно загружен!`
-      })
+      this.refreshForm()
+      this.isPopupOpen = true
+      this.popupText = `Трек ${data.name} успешно загружен!`
     } catch (err) {
-      runInAction(() => {
-        if (err.response) {
-          this.uploadError = err.response.data.message
-        } else {
-          this.uploadError = err.message
-        }
-      })
+      if (err.response) {
+        this.uploadError = err.response.data.message
+      } else {
+        this.uploadError = err.message
+      }
     } finally {
-      runInAction(() => {
-        this.fetchLoading = false
-      })
+      this.fetchLoading = false
     }
   }
 }
