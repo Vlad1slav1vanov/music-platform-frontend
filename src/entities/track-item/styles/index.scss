@@ -7,6 +7,11 @@
   padding: 10px 40px;
   gap: 50px;
   border: 1px solid grey;
+
+  &:hover {
+    border: 1px solid #5824f3;
+    outline: 1px solid #5824f3;
+  }
 }
 
 .track-item__image {

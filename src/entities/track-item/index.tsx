@@ -1,5 +1,7 @@
 import { Card, Typography } from "@mui/material";
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { baseUrl } from "shared/api/baseUrl";
 import './styles/index.scss';
 
 interface TrackItemProps {
@@ -7,7 +9,6 @@ interface TrackItemProps {
   name: string;
   artist: string;
   album?: string;
-  duration: number;
   button: React.ReactNode;
 }
 
@@ -16,15 +17,17 @@ const TrackItem: React.FC<TrackItemProps> = ({
   name, 
   artist, 
   album,
-  duration,
   button
 }) => {
+  const navigate = useNavigate();
   return (
-    <Card className="track-item">
+    <Card 
+    className="track-item"
+    >
       {button}
       <img 
       className="track-item__image"
-      src={picture ? picture : "/images/empty-audio.jpeg"} 
+      src={picture ? `${baseUrl}/${picture}` : "/images/empty-audio.jpeg"} 
       width="80" 
       height="80" 
       alt={`${name}, ${artist}`} 
@@ -33,11 +36,6 @@ const TrackItem: React.FC<TrackItemProps> = ({
         <Typography className="track-item__name">{name}</Typography>
         <Typography className="track-item__artist">{artist}</Typography>
         <Typography className="track-item__album">{album}</Typography>
-      </div>
-      <div className="track-item__duration">
-        <Typography>
-          {duration}
-        </Typography>
       </div>
     </Card>
   )
