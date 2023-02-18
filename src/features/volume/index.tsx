@@ -3,11 +3,18 @@ import { VolumeDown, VolumeUp } from "@mui/icons-material";
 import { Slider } from "@mui/material";
 import './styles/index.scss'
 
-const Volume: React.FC = () => {
+interface VolumeProps {
+  value: number;
+  onChange: (event: Event, value: number | number[]) => void;
+}
+
+const Volume: React.FC<VolumeProps> = ({value, onChange}) => {
   return (
     <div className="player-volume">
       <VolumeDown />
       <Slider 
+      onChange={onChange}
+      value={value}
       min={0} 
       max={100}
       valueLabelDisplay="auto"

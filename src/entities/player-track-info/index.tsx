@@ -1,5 +1,6 @@
 import { Typography } from "@mui/material";
 import React from "react";
+import { baseUrl } from "shared/api/baseUrl";
 import './styles/index.scss';
 
 interface PlayerTrackInfoProps {
@@ -11,7 +12,7 @@ interface PlayerTrackInfoProps {
 const PlayerTrackInfo: React.FC<PlayerTrackInfoProps> = ({
   name, 
   artist, 
-  album
+  album,
 }) => {
   return (
     <div className="player-track-info">

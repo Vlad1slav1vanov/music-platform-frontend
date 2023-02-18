@@ -4,6 +4,7 @@ import TrackProgress from "features/track-progress"
 import Volume from "features/volume"
 import { observer } from "mobx-react-lite"
 import React from "react"
+import { baseUrl } from "shared/api/baseUrl"
 import playerStore from "shared/player-store"
 import trackListStore from "widgets/track-list/store"
 import './styles/index.scss'
@@ -11,9 +12,10 @@ import './styles/index.scss'
 let audio: HTMLAudioElement
 
 const Player: React.FC = () => {
-  const changeVolume = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    audio.volume = Number(evt.target.value) / 100
-    playerStore.setVolume(Number(evt.target.value))
+  function handleVolumeChange(event: Event, value: number | number[]) {
+    const newVolume = typeof value === 'number' ? value : value[0]
+    audio.volume = newVolume / 100
+    playerStore.setVolume(newVolume)
   }
 
   const changeCurrentTime = (evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,12 +88,15 @@ const Player: React.FC = () => {
       handlePause={pause}
       />
       <PlayerTrackInfo 
-      name="Lose Yourself" 
-      artist="Eminem" 
-      album="Eminem Show" 
+      name={playerStore.active.name}
+      artist={playerStore.active.artist} 
+      // album={playerStore.active.} 
       />
       <TrackProgress />
-      <Volume />
+      <Volume 
+      value={playerStore.volume}
+      onChange={handleVolumeChange}
+      />
     </div>
   )
 }
