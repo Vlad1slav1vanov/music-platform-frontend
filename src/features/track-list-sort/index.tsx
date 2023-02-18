@@ -11,9 +11,9 @@ interface TrackListSortProps {
 }
 
 const TrackListSort: React.FC<TrackListSortProps> = ({
-  value, 
-  getAllTracks, 
-  getNewTracks, 
+  value,
+  getAllTracks,
+  getNewTracks,
   getPopularTracks
 }) => {
   return (
