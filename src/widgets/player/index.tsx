@@ -4,23 +4,22 @@ import TrackProgress from "features/track-progress"
 import Volume from "features/volume"
 import { observer } from "mobx-react-lite"
 import React from "react"
-import { baseUrl } from "shared/api/baseUrl"
 import playerStore from "shared/player-store"
-import trackListStore from "widgets/track-list/store"
 import './styles/index.scss'
 
 let audio: HTMLAudioElement
 
 const Player: React.FC = () => {
-  function handleVolumeChange(event: Event, value: number | number[]) {
+  const handleVolumeChange = (event: Event, value: number | number[]) => {
     const newVolume = typeof value === 'number' ? value : value[0]
     audio.volume = newVolume / 100
     playerStore.setVolume(newVolume)
   }
 
-  const changeCurrentTime = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    audio.currentTime = Number(evt.target.value)
-    playerStore.setCurrentTime(Number(evt.target.value))
+  const handleCurrentTimeChange = (event: Event, value: number | number[]) => {
+    const newCurrentTime = typeof value === 'number' ? value : value[0]
+    audio.currentTime = newCurrentTime
+    playerStore.setCurrentTime(newCurrentTime)
   }
 
   const play = () => {
@@ -62,6 +61,12 @@ const Player: React.FC = () => {
   }
 
   React.useEffect(() => {
+    if (playerStore.currentTime === playerStore.duration) {
+      nextTrack();
+    }
+  }, [playerStore.currentTime])
+
+  React.useEffect(() => {
     if (!audio) {
       audio = new Audio();
     }
@@ -92,7 +97,12 @@ const Player: React.FC = () => {
       artist={playerStore.active.artist} 
       // album={playerStore.active.} 
       />
-      <TrackProgress />
+      <TrackProgress 
+      value={playerStore.currentTime}
+      onChange={handleCurrentTimeChange}
+      duration={playerStore.currentTime}
+      fullTime={playerStore.duration}
+      />
       <Volume 
       value={playerStore.volume}
       onChange={handleVolumeChange}

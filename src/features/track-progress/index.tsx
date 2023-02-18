@@ -1,21 +1,45 @@
 import { Slider, Typography } from "@mui/material";
+import { observer } from "mobx-react-lite";
 import React from "react";
 import './styles/index.scss';
+import dayjs from "dayjs";
 
-const TrackProgress: React.FC = () => {
+interface TrackProgressProps {
+  value: number
+  onChange: (event: Event, value: number | number[]) => void
+  duration: number
+  fullTime: number
+}
+
+const TrackProgress: React.FC<TrackProgressProps> = ({
+  value,
+  onChange,
+  duration,
+  fullTime
+}) => {
   return (
     <div className="track-progress">
-      <Typography className="track-progress__duration">00:00</Typography>
+      <Typography 
+      className="track-progress__duration"
+      >
+        {dayjs(duration*1000).format('mm:ss')}
+      </Typography>
       <Slider 
         min={0}
-        max={100}
+        max={fullTime}
+        value={value}
+        onChange={onChange}
         sx={{
           color: "white"
         }} 
         />
-      <Typography className="track-progress__duration">05:00</Typography>
+      <Typography 
+      className="track-progress__duration"
+      >
+        {dayjs(fullTime*1000).format('mm:ss')}
+      </Typography>
     </div>
   )
 }
 
-export default TrackProgress;
+export default observer(TrackProgress);
