@@ -9,11 +9,16 @@ class PlayerStore {
 
   audio = null as HTMLAudioElement | null;
 
+  playList: ITrack[] = []
   currentTime = 0
   duration = 0
   active: ITrack | null = null
   volume = 50
   pause = true
+
+  setPlayList = (list: ITrack[]) => {
+    this.playList = list;
+  }
 
   pauseTrack = () => {
     this.pause = true;

@@ -2,9 +2,14 @@ import { IconButton } from "@mui/material";
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import React from "react";
 
-const ButtonSkipPrev: React.FC = () => {
+interface ButtonSkipPrevProps {
+  onClick: () => void;
+}
+
+const ButtonSkipPrev: React.FC<ButtonSkipPrevProps> = ({onClick}) => {
   return (
     <IconButton
+    onClick={onClick}
     sx={{
       width: 50,
       height: 50,

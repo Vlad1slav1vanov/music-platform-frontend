@@ -1,44 +1,52 @@
 import { Card, Typography } from "@mui/material";
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { baseUrl } from "shared/api/baseUrl";
 import './styles/index.scss';
+import { ITrack } from "shared/types/track";
+import playerStore from "shared/player-store";
+import { observer } from "mobx-react-lite";
+import TrackButtonPlay from "shared/UI/TrackButtonPlay";
 
 interface TrackItemProps {
-  picture?: string;
-  name: string;
-  artist: string;
-  album?: string;
-  button: React.ReactNode;
+  track: ITrack;
 }
 
-const TrackItem: React.FC<TrackItemProps> = ({
-  picture, 
-  name, 
-  artist, 
-  album,
-  button
-}) => {
-  const navigate = useNavigate();
+const TrackItem: React.FC<TrackItemProps> = ({track}) => {
+  const play = (evt: React.MouseEvent<HTMLButtonElement>) => {
+    evt.stopPropagation();
+    playerStore.setActive(track);
+    playerStore.playAudio();
+    playerStore.setCurrentTime(0)
+  };
+
+  const pause = (evt: React.MouseEvent<HTMLButtonElement>) => {
+    evt.stopPropagation();
+    playerStore.pauseAudio();
+  }
+
   return (
     <Card 
     className="track-item"
     >
-      {button}
+      <TrackButtonPlay 
+      handlePause={pause}
+      handlePlay={play}
+      track={track}
+      />
       <img 
       className="track-item__image"
-      src={picture ? `${baseUrl}/${picture}` : "/images/empty-audio.jpeg"} 
+      src={track.picture ? `${baseUrl}/${track.picture}` : "/images/empty-audio.jpeg"} 
       width="80" 
       height="80" 
-      alt={`${name}, ${artist}`} 
+      alt={`${track.name}, ${track.artist}`} 
       />
       <div className="track-item__info">
-        <Typography className="track-item__name">{name}</Typography>
-        <Typography className="track-item__artist">{artist}</Typography>
-        <Typography className="track-item__album">{album}</Typography>
+        <Typography className="track-item__name">{track.name}</Typography>
+        <Typography className="track-item__artist">{track.artist}</Typography>
+        {/* <Typography className="track-item__album">{track.album}</Typography> */}
       </div>
     </Card>
   )
 }
 
-export default TrackItem;
+export default observer(TrackItem);

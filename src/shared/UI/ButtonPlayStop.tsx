@@ -5,14 +5,21 @@ import PauseCircleIcon from '@mui/icons-material/PauseCircle';
 
 interface ButtonPlayStopProps {
   isActive: boolean;
+  play: () => void;
+  pause: () => void;
 }
 
-const ButtonPlayStop: React.FC<ButtonPlayStopProps> = ({isActive}) => {
+const ButtonPlayStop: React.FC<ButtonPlayStopProps> = ({
+  isActive, 
+  play, 
+  pause
+}) => {
   return (
     <>
       {
       isActive
-      ? <IconButton 
+      ? <IconButton
+        onClick={pause}
         size="large" 
         sx={{
           width: 70, 
@@ -28,6 +35,7 @@ const ButtonPlayStop: React.FC<ButtonPlayStopProps> = ({isActive}) => {
           />
         </IconButton>
       : <IconButton 
+        onClick={play}
         sx={{
           width: 70, 
           height: 70

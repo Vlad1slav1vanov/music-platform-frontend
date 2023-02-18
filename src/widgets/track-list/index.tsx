@@ -1,8 +1,8 @@
 import TrackItem from "entities/track-item";
-import ButtonStartStop from "features/button-start-stop";
 import TrackListSort from "features/track-list-sort";
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
+import playerStore from "shared/player-store";
 import trackListStore from "./store";
 import './styles/index.scss';
 
@@ -10,6 +10,10 @@ const TrackList: React.FC = () => {
   useEffect(() => {
     trackListStore.fetchTracks()
   }, [])
+
+  const setPlayList = React.useMemo(() => {
+    playerStore.setPlayList(trackListStore.trackList)
+  }, [trackListStore.trackList])
 
   return (
     <div className="track-list">
@@ -21,11 +25,8 @@ const TrackList: React.FC = () => {
       />
       {trackListStore.trackList.map(track => 
         <TrackItem
-        button={<ButtonStartStop isActive={false} />}
         key={track._id}
-        name={track.name}
-        artist={track.artist} 
-        picture={track.picture}
+        track={track}
         />
       )}
     </div>
