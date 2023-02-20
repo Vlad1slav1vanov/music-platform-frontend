@@ -6,12 +6,15 @@ import { ITrack } from "shared/types/track";
 import playerStore from "shared/player-store";
 import { observer } from "mobx-react-lite";
 import TrackButtonPlay from "shared/UI/TrackButtonPlay";
+import { useNavigate } from "react-router-dom";
 
 interface TrackItemProps {
   track: ITrack;
 }
 
 const TrackItem: React.FC<TrackItemProps> = ({track}) => {
+  const navigate = useNavigate();
+
   const play = (evt: React.MouseEvent<HTMLButtonElement>) => {
     evt.stopPropagation();
     playerStore.setActive(track);
@@ -27,6 +30,7 @@ const TrackItem: React.FC<TrackItemProps> = ({track}) => {
   return (
     <Card 
     className="track-item"
+    onClick={() => navigate(`/tracks/${track._id}`)}
     >
       <TrackButtonPlay 
       handlePause={pause}

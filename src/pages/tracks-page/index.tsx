@@ -1,3 +1,4 @@
+import SearchInput from 'entities/search-input';
 import UploadOffer from 'entities/upload-offer';
 import React from 'react';
 import PageTitle from 'shared/UI/PageTitle';

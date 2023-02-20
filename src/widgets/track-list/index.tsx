@@ -11,7 +11,7 @@ const TrackList: React.FC = () => {
     trackListStore.fetchTracks()
   }, [])
 
-  const setPlayList = React.useMemo(() => {
+  React.useMemo(() => {
     playerStore.setPlayList(trackListStore.trackList)
   }, [trackListStore.trackList])
 
