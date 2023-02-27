@@ -1,31 +1,31 @@
-import { Avatar, Button, TextField, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Typography } from "@mui/material";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { observer } from "mobx-react-lite";
 import React from "react";
-import userStore from "shared/user-store";
+import CommentsList from "entities/comments-list";
+import { IComment } from "shared/types/comment";
+import CommentForm from "entities/comment-form";
 
-const CommentsBlock: React.FC = () => {
+interface CommentsBlockProps {
+  comments?: IComment[]
+  commentsCount?: number;
+}
+
+const CommentsBlock: React.FC<CommentsBlockProps> = ({comments, commentsCount}) => {
   return (
     <div className="comments-block">
-      <Typography>Комментарии</Typography>
-      {userStore.email
-      ? <div className="comments-block__create-comment">
-          <Avatar/>       
-          <TextField
-          label="Оставить комментарий..."
-          multiline
-          fullWidth
-          />
-          <Button
-          sx={{alignSelf: 'end'}}
-          variant='contained' 
-          >
-            Отправить
-          </Button>
-        </div>
-      : <div className="comments-block__register-error">
-        
-        </div>
-      }
+    <Accordion sx={{border: "1px grey solid"}}>
+      <AccordionSummary
+      expandIcon={<ExpandMoreIcon color="primary" />}
+      aria-controls="panel1a-content"
+      >
+        <Typography fontSize={20} color="primary" >Комментарии ({commentsCount})</Typography>
+      </AccordionSummary>
+      <AccordionDetails sx={{display: "flex", flexDirection: "column", gap: "30px"}}>
+        <CommentForm />
+        <CommentsList comments={comments} />
+      </AccordionDetails>
+    </Accordion>
     </div>
   )
 }
